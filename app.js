@@ -34,7 +34,9 @@ app.get("/", (req, res) => {
       }
       if (data.modifiedCount === 0) {
         Visitor.create({ name: name || "Anónimo" }, function (err) {
-          console.log(err);
+          if (err) {
+            console.log(err);
+          }
         });
       }
     }
