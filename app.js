@@ -18,18 +18,13 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   // se recibe el query string
   let { name } = req.query;
-
-  if (name === undefined || name === "") {
-    name = "Anónimo";
-  }
-  const dateAndHour = new Date();
-  const valueDate =
-    dateAndHour.toLocaleDateString() + " " + dateAndHour.getHours();
   //se guarda la información en la base de datos
-  Visitor.create({ date: valueDate, name: name });
+  const visitor = new Visitor({ name: name || "Anónimo" });
+  await visitor.save();
+
   res.send(`<h1>El visitante fue almacenado con éxito</h1>`);
 });
 
