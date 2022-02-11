@@ -20,21 +20,22 @@ app.use(
 
 app.get("/", (req, res) => {
   // se recibe el query string
-  let { name } = req.query;
+  const { name } = req.query;
 
-  //find by id
+  //find by name
   Visitor.updateOne(
     { name: name },
     { $inc: { count: 1 } },
-    async function (err, data) {
+    function (err, data) {
       if (err) {
         console.log(err);
       } else {
         console.log("se actuzalizó un usuario");
       }
       if (data.modifiedCount === 0) {
-        const visitor = new Visitor({ name: name || "Anónimo" });
-        await visitor.save();
+        Visitor.create({ name: name || "Anónimo" }, function (err) {
+          console.log(err);
+        });
       }
     }
   );
@@ -50,8 +51,8 @@ app.get("/", (req, res) => {
               <td><strong>Visits</strong></td>
             </tr>
             ${visitors.map(
-              (visitor) =>
-                `<tr><td>${visitor._id}</td><td>${visitor.name}</td><td>${visitor.count}</td></tr>`
+              (oneVisitor) =>
+                `<tr><td>${oneVisitor._id}</td><td>${oneVisitor.name}</td><td>${oneVisitor.count}</td></tr>`
             )}
           </table>
         </div>
