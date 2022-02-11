@@ -20,30 +20,36 @@ app.use(
 
 app.get("/", (req, res) => {
   // se recibe el query string
-  let { name } = req.query;
+  var { name } = req.query;
 
-  //find by name
-  Visitor.updateOne(
-    { name: name },
-    { $inc: { count: 1 } },
-    function (err, data) {
+  if ((name !== undefined) & (name !== "")) {
+    //find by name
+    Visitor.updateOne(
+      { name: name },
+      { $inc: { count: 1 } },
+      function (err, data) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("se actuzalizó un usuario");
+        }
+        if (data.modifiedCount === 0) {
+          Visitor.create({ name: name }, function (err) {
+            if (err) {
+              console.log(err);
+            }
+          });
+        }
+      }
+    );
+  } else {
+    name = "Anónimo";
+    Visitor.create({ name: name }, function (err) {
       if (err) {
         console.log(err);
-      } else {
-        console.log("se actuzalizó un usuario");
       }
-      if (data.modifiedCount === 0) {
-        if (name === undefined || name === "") {
-          name = "Anónimo";
-        }
-        Visitor.create({ name: name }, function (err) {
-          if (err) {
-            console.log(err);
-          }
-        });
-      }
-    }
-  );
+    });
+  }
 
   // call all the collection
   Visitor.find({}, function (err, visitors) {
