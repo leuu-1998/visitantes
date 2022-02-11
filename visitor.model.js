@@ -6,5 +6,5 @@ var userSchema = Schema({
   name: String,
 });
 
-var User = model("User", userSchema);
-module.exports = User;
+var Visitor = model("Visitor", userSchema);
+module.exports = Visitor;
