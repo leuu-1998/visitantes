@@ -26,8 +26,16 @@ app.get("/", (req, res) => {
     name = "Anónimo";
   }
   const dateAndHour = new Date();
+  const valueDate =
+    dateAndHour.toLocaleDateString() +
+    " " +
+    dateAndHour.getHours() +
+    ":" +
+    dateAndHour.getMinutes() +
+    ":" +
+    dateAndHour.getSeconds();
   //se guarda la información en la base de datos
-  User.create({ date: dateAndHour, name: name });
+  User.create({ date: valueDate, name: name });
   res.send(`<h1>El visitante fue almacenado con éxito</h1>`);
 });
 
