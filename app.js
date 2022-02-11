@@ -33,7 +33,10 @@ app.get("/", (req, res) => {
         console.log("se actuzalizó un usuario");
       }
       if (data.modifiedCount === 0) {
-        Visitor.create({ name: name || "Anónimo" }, function (err) {
+        if (name === undefined || name === "") {
+          name = "Anónimo";
+        }
+        Visitor.create({ name: name }, function (err) {
           if (err) {
             console.log(err);
           }
