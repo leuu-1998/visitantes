@@ -2,7 +2,7 @@ const { model, Schema } = require("mongoose");
 
 // Schema definition
 var userSchema = Schema({
-  date: { type: Date, default: Date.now },
+  count: { type: Number, default: 1 },
   name: { type: String },
 });
 
