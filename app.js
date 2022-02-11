@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
   // call all the collection
   Visitor.find({}, function (err, visitors) {
     res.send(
-      `
+      `<div>
           <table>
             <tr>
               <td><strong>Id</strong></td>
@@ -54,6 +54,7 @@ app.get("/", (req, res) => {
                 `<tr><td>${visitor._id}</td><td>${visitor.name}</td><td>${visitor.count}</td></tr>`
             )}
           </table>
+        </div>
       `
     );
   });
