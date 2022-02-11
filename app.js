@@ -27,13 +27,7 @@ app.get("/", (req, res) => {
   }
   const dateAndHour = new Date();
   const valueDate =
-    dateAndHour.toLocaleDateString() +
-    " " +
-    dateAndHour.getHours() +
-    ":" +
-    dateAndHour.getMinutes() +
-    ":" +
-    dateAndHour.getSeconds();
+    dateAndHour.toLocaleDateString() + " " + dateAndHour.getHours();
   //se guarda la información en la base de datos
   User.create({ date: valueDate, name: name });
   res.send(`<h1>El visitante fue almacenado con éxito</h1>`);
