@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
   const dateAndHour = new Date();
   //se guarda la información en la base de datos
   User.create({ date: dateAndHour, name: name });
-  res.send(`<h1>${name}</h1>`);
+  res.send(`<h1>El visitante fue almacenado con éxito</h1>`);
 });
 
 app.listen(3000, () => console.log("Listening on port 3000!!!"));
