@@ -20,7 +20,7 @@ app.use(
 
 app.get("/", (req, res) => {
   // se recibe el query string
-  const { name } = req.query;
+  let { name } = req.query;
 
   //find by name
   Visitor.updateOne(
