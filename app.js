@@ -47,24 +47,22 @@ app.get("/", async (req, res) => {
 
   // then get all the collection
   const visitors = await Visitor.find({});
+  let htmlVisitors = "";
+  for (let i = 0; i < visitors.length; i++) {
+    htmlVisitors =
+      htmlVisitors +
+      "<tr><td>" +
+      visitors[i]._id +
+      "</td><td>" +
+      visitors[i].name +
+      "</td><td>" +
+      visitors[i].count +
+      "</td></tr>";
+  }
   res.send(
-    `
-      <table>
-        <thead>
-          <tr>
-            <th><strong>Id</strong></th>
-            <th><strong>Name</strong></th>
-            <th><strong>Visits</strong></th>
-          </tr>
-        </thead>
-        <tbody>
-          ${visitors.map(
-            (oneVisitor) =>
-              `<tr><td>${oneVisitor._id}</td><td>${oneVisitor.name}</td><td>${oneVisitor.count}</td></tr>`
-          )}
-        </tbody>
-      </table>
-    `
+    "<table><thead><tr><th><strong>Id</strong></th><th><strong>Name</strong></th><th><strong>Visits</strong></th></tr></thead><tbody>" +
+      htmlVisitors +
+      "</tbody></table>"
   );
 });
 
