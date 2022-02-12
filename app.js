@@ -18,58 +18,56 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   // se recibe el query string
   var { name } = req.query;
 
   if ((name !== undefined) & (name !== "")) {
     //find by name
-    Visitor.updateOne(
+    const data = await Visitor.updateOne(
       { name: name },
-      { $inc: { count: 1 } },
-      function (err, data) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log("se actuzalizó un usuario");
-        }
-        if (data.modifiedCount === 0) {
-          Visitor.create({ name: name }, function (err) {
-            if (err) {
-              console.log(err);
-            }
-          });
-        }
-      }
+      { $inc: { count: 1 } }
     );
-  } else {
-    name = "Anónimo";
-    Visitor.create({ name: name }, function (err) {
-      if (err) {
-        console.log(err);
+    //modifiedcount=1 => se actualizó ==0 entonces no
+    //if not update a visitor then we have to create a new visitor
+    if (data.modifiedCount === 0) {
+      try {
+        await Visitor.create({ name: name });
+      } catch (e) {
+        console.error(e);
       }
-    });
+    }
+  } else {
+    try {
+      name = "Anónimo";
+      await Visitor.create({ name: name });
+    } catch (e) {
+      console.error(e);
+    }
   }
 
-  // call all the collection
-  Visitor.find({}, function (err, visitors) {
-    res.send(
-      `<div>
-          <table>
-            <tr>
-              <td><strong>Id</strong></td>
-              <td><strong>Name</strong></td>
-              <td><strong>Visits</strong></td>
-            </tr>
-            ${visitors.map(
-              (oneVisitor) =>
-                `<tr><td>${oneVisitor._id}</td><td>${oneVisitor.name}</td><td>${oneVisitor.count}</td></tr>`
-            )}
-          </table>
-        </div>
-      `
-    );
-  });
+  // then get all the collection
+  const visitors = await Visitor.find({});
+  res.send(
+    `<div>
+      <table>
+        <tr>
+          <td><strong>Id</strong></td>
+          <td><strong>Name</strong></td>
+          <td><strong>Visits</strong></td>
+        </tr>
+        ${visitors.map(
+          (oneVisitor) =>
+            `<tr><td>${oneVisitor._id}</td><td>${oneVisitor.name}</td><td>${oneVisitor.count}</td></tr>`
+        )}
+      </table>
+    </div>
+`
+  );
 });
 
 app.listen(3000, () => console.log("Listening on port 3000!!!"));
+
+/* res.send(
+  
+); */
